@@ -1,4 +1,4 @@
-🚦 Accident Zone Risk Analysis & Severity Prediction
+🚦 Accident Zone Risk System
 
 Project Overview
 
