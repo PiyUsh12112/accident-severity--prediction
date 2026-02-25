@@ -1,6 +1,8 @@
 # 🚦 Accident Zone Risk System  
 ###  Risk Analysis & Accident Hotspot Detection using 300K+ Records
 
+![Zone Risk Map](images/zone_risk_map.png)
+
 
 Project Overview
 
