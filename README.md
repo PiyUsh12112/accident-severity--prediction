@@ -2,83 +2,88 @@
 
 Project Overview
 
-Road accidents are not randomly distributed — certain zones consistently experience higher accident frequency and higher severity levels.
+This project analyzes 300,000+ real-world road accident records to identify accident-prone zones and assign a risk score to each zone.
 
-This project analyzes 300,000+ real-world accident records to:
+The primary objective is spatial risk analysis — identifying high-frequency and high-severity accident areas.  
+Predictive modeling is used as a supporting tool to understand accident severity patterns.
 
-- Identify accident-prone zones
-- Detect high-risk areas
-- Predict accident severity
-- Analyze patterns over time
+---
+Objectives
 
-The objective is to combine data analysis and machine learning to understand **where accidents occur most frequently and how severe they are.
+- Identify accident-prone zones based on historical data
+- Assign a risk score to each zone
+- Visualize accident hotspots using an interactive map
+- Predict accident severity using machine learning models
 
-Problem Statement
- 
-Can we:
-1. Identify zones with high accident frequency?
-2. Detect high-risk accident hotspots?
-3. Predict accident severity based on environmental and vehicle-related features?
+---
 
-This project addresses both spatial risk analysis and predictive modeling.
+Zone Risk Analysis
 
+Accident locations were grouped into zones based on geographic segmentation.
 
-Dataset Information
+For each zone, the following were calculated:
 
-- 300K+ real-world accident records
-- Features include:
-  - Location / Zone
-  - Date & Time
+- Total accident count
+- Severity distribution
+- Composite risk score
+
+Zones with higher accident frequency and higher severity concentration receive higher risk scores.
+
+An interactive map was built where:
+
+- Each zone is clickable
+- Risk score is displayed on click
+- Accident distribution is visualized spatially
+
+This enables intuitive identification of accident hotspots.
+
+---
+
+Risk Scoring Logic
+
+Each zone is assigned a risk score based on:
+
+- Accident frequency
+- Severity concentration
+
+The score reflects relative accident risk within the dataset.
+
+Higher score → Higher accident risk.
+
+---
+ Machine Learning Component
+
+To support severity analysis, the following models were implemented:
+
+- Logistic Regression (Baseline)
+- Logistic Regression (Class-weight balanced)
+- Random Forest Classifier
+
+ Model Performance
+
+- Overall accuracy: ~85%
+- Special focus was placed on handling class imbalance
+- Emphasis on recall for severe accident cases
+
+Accuracy was treated as a secondary metric, since the primary goal of the project is spatial risk analysis.
+
+---
+
+  Dataset
+
+- 300,000+ accident records
+- Includes:
+  - Location (latitude/longitude)
+  - Date & time
   - Road type
-  - Weather conditions
+  - Environmental conditions
   - Vehicle information
   - Casualties
 
 > Raw dataset not included due to size constraints.
 
-Zone Risk Analysis
+---
 
-  Accident Frequency by Zone
-- Aggregated accident counts by geographic zones
-- Identified high-frequency accident regions
-- Visualized accident density distribution
+📁 Project Structure
 
- High-Risk Zone Detection
-- Calculated accident severity concentration per zone
-- Identified zones with high severe accident ratios
-- Compared frequency vs severity trade-offs
-
-
- 🧠 Machine Learning Approach
-
- 1️⃣ Data Cleaning
-- Handled missing values
-- Removed redundant columns
-
- 2️⃣ Feature Engineering
-- Extracted Year, Month, Hour from datetime
-- Encoded categorical variables
-- Created meaningful ratio-based features
-
- 3️⃣ Handling Class Imbalance
-- Analyzed severity class distribution
-- Applied class-weight balancing
-
-
- Models Used
-
-- Logistic Regression (Baseline)
-- Logistic Regression (Balanced)
-- Random Forest Classifier
-
-
-
- Evaluation Focus
-
-Rather than relying only on accuracy, evaluation emphasized:
-
-- Recall for severe accidents
-- F1-score
-- Performance comparison between balanced and unbalanced models
-- Minority class detection
 
