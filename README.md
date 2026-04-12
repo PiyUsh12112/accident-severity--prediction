@@ -1,92 +1,103 @@
-# 🚦 Accident Zone Risk System  
-###  Risk Analysis & Accident Hotspot Detection using 300K+ Records
+# Accident Zone Risk System
 
-![Zone Risk Map](images/zone_risk_map.png)
+Risk analysis and accident hotspot detection using 300K+ road accident records.
 
+This project groups accident locations into geographic zones, scores each zone by historical accident severity and frequency, and renders a map that highlights the areas with the highest combined danger signal. A machine learning model is used as a supporting layer to estimate severity risk, while the main product focus remains zone-level spatial analysis.
 
-Project Overview
+## What It Does
 
-This project analyzes 300,000+ real-world road accident records to identify accident-prone zones and assign a risk score to each zone.
+- Cleans and standardizes road accident records.
+- Builds model-ready features from location, time, road, weather, vehicle, and casualty fields.
+- Groups accident points into latitude/longitude grid zones.
+- Calculates per-zone accident counts, severity counts, and risk scores.
+- Adds predicted fatal/serious severity probabilities to each zone.
+- Produces an interactive Folium map for high-risk zones.
 
-The primary objective is spatial risk analysis — identifying high-frequency and high-severity accident areas.  
-Predictive modeling is used as a supporting tool to understand accident severity patterns.
+## Dataset
 
----
-Objectives
+The project is built around 300K+ road accident records. The processed local dataset currently contains about 307K accident rows.
 
-- Identify accident-prone zones based on historical data
-- Assign a risk score to each zone
-- Visualize accident hotspots using an interactive map
-- Predict accident severity using machine learning models
+Typical fields include:
 
----
+- Latitude and longitude
+- Accident date and time
+- Road type and speed limit
+- Weather, lighting, and road-surface conditions
+- Vehicle information
+- Number of casualties and vehicles
+- Severity label: Fatal, Serious, or Slight
 
-Zone Risk Analysis
+Large raw and processed data files should be handled carefully and may be excluded from GitHub when they are too large or sensitive.
 
-Accident locations were grouped into zones based on geographic segmentation.
+## Zone Risk Logic
 
-For each zone, the following were calculated:
+Each accident is assigned to a geographic grid zone. For each zone, the pipeline calculates:
 
-- Total accident count
-- Severity distribution
-- Composite risk score
+- Accident count
+- Fatal accident count
+- Serious accident count
+- Slight accident count
+- Average zone latitude and longitude
+- Historical risk score
+- Predicted fatal risk
+- Predicted serious risk
+- Predicted severe risk
+- Combined risk score and danger level
 
-Zones with higher accident frequency and higher severity concentration receive higher risk scores.
+The higher the combined score, the more important the zone is for safety review and accident-prevention planning.
 
-An interactive map was built where:
+## Machine Learning
 
-- Each zone is clickable
-- Risk score is displayed on click
-- Accident distribution is visualized spatially
+The current source code uses a `BalancedRandomForestClassifier` to handle class imbalance across accident severities.
 
-This enables intuitive identification of accident hotspots.
+Current saved training metrics:
 
----
+- Accuracy: 59.64%
+- Fatal recall: 43.49%
+- Serious recall: 41.24%
+- Slight recall: 62.73%
+- Training rows: 246,377
+- Test rows: 61,595
 
-Risk Scoring Logic
+Accuracy is not the only success metric here because the dataset is imbalanced. Recall for severe classes is especially important when the goal is risk detection.
 
-Each zone is assigned a risk score based on:
+## Project Structure
 
-- Accident frequency
-- Severity concentration
+```text
+.
+├── data/
+│   ├── raw/                 # Original dataset, when available locally
+│   └── processed/           # Cleaned data, model features, zone scores
+├── docs/                    # Data dictionary and documentation
+├── models/                  # Trained model artifacts, usually ignored
+├── reports/                 # Training metrics and evaluation output
+├── src/                     # Pipeline, preprocessing, modeling, scoring, map rendering
+├── README.md
+└── zone_risk_map.html       # Generated interactive map, when built locally
+```
 
-The score reflects relative accident risk within the dataset.
+## How To Run Locally
 
-Higher score → Higher accident risk.
+Install the project dependencies in your Python environment, then run the pipeline scripts from the repository root.
 
----
- Machine Learning Component
+```bash
+python -m src.pipeline
+python -m src.train
+python -m src.score_zones
+python -m src.render_zone_map
+```
 
-To support severity analysis, the following models were implemented:
+The generated map is saved as `zone_risk_map.html`.
 
-- Logistic Regression (Baseline)
-- Logistic Regression (Class-weight balanced)
-- Random Forest Classifier
+## Outputs
 
- Model Performance
+- `data/processed/cleaned_accident_data.csv`
+- `data/processed/model_features.csv`
+- `data/processed/zone_risk_scores.csv`
+- `reports/training_metrics.json`
+- `models/accident_model_bundle.pkl`
+- `zone_risk_map.html`
 
-- Overall accuracy: ~85%
-- Special focus was placed on handling class imbalance
-- Emphasis on recall for severe accident cases
+## Notes
 
-Accuracy was treated as a secondary metric, since the primary goal of the project is spatial risk analysis.
-
----
-
-  Dataset
-
-- 300,000+ accident records
-- Includes:
-  - Location (latitude/longitude)
-  - Date & time
-  - Road type
-  - Environmental conditions
-  - Vehicle information
-  - Casualties
-
-> Raw dataset not included due to size constraints.
-
-
-📁 Project Structure
-
-
+This is a portfolio-style data science project focused on spatial safety insight. The model helps enrich the risk score, but the most important deliverable is the interpretable zone-level accident-risk output.
