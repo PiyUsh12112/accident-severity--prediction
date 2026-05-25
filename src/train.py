@@ -1,60 +1,24 @@
+from __future__ import annotations
+
 import pandas as pd
-import joblib
-from pathlib import Path
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report
 
-# File paths
-DATA_PATH = Path("data/processed/processed_accident_data.csv")
-MODEL_PATH = Path("models/accident_model.pkl")
+from src.modeling import save_training_outputs, train_model
+from src.paths import EVALUATION_REPORT_PATH, FEATURE_DATA_PATH, MODEL_BUNDLE_PATH, ensure_directories
 
 
-def load_data():
-    print("Loading processed data...")
-    df = pd.read_csv(DATA_PATH)
-    return df
+def load_feature_data(path=FEATURE_DATA_PATH) -> pd.DataFrame:
+    return pd.read_csv(path)
 
 
-def train_model(df):
-    print("Training model...")
+def main() -> None:
+    ensure_directories()
+    feature_df = load_feature_data()
+    artifacts = train_model(feature_df)
+    save_training_outputs(str(MODEL_BUNDLE_PATH), str(EVALUATION_REPORT_PATH), artifacts)
 
-    # Separate target
-    y = df["accident_severity"]
-
-    # Drop target column
-    X = df.drop("accident_severity", axis=1)
-
-    # Keep only numeric columns
-    X = X.select_dtypes(include=["int64", "float64"])
-
-    # Train-test split
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
-    )
-
-    # Model
-    model = RandomForestClassifier(class_weight="balanced", random_state=42)
-    model.fit(X_train, y_train)
-
-    # Evaluation
-    y_pred = model.predict(X_test)
-    print("\nModel Evaluation:\n")
-    print(classification_report(y_test, y_pred))
-
-    return model
-
-
-def save_model(model):
-    print("Saving model...")
-    joblib.dump(model, MODEL_PATH)
-
-
-def main():
-    df = load_data()
-    model = train_model(df)
-    save_model(model)
-    print("Training completed successfully.")
+    print(f"Saved model bundle to {MODEL_BUNDLE_PATH}")
+    print(f"Saved evaluation report to {EVALUATION_REPORT_PATH}")
+    print(f"Accuracy: {artifacts.metrics['accuracy']:.4f}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,128 @@
+{
+  "model_name": "XGBoost",
+  "model_params": {
+    "objective": "multi:softprob",
+    "base_score": null,
+    "booster": null,
+    "callbacks": null,
+    "colsample_bylevel": null,
+    "colsample_bynode": null,
+    "colsample_bytree": 0.85,
+    "device": null,
+    "early_stopping_rounds": null,
+    "enable_categorical": false,
+    "eval_metric": "mlogloss",
+    "feature_types": null,
+    "feature_weights": null,
+    "gamma": null,
+    "grow_policy": null,
+    "importance_type": null,
+    "interaction_constraints": null,
+    "learning_rate": 0.08,
+    "max_bin": null,
+    "max_cat_threshold": null,
+    "max_cat_to_onehot": null,
+    "max_delta_step": null,
+    "max_depth": 8,
+    "max_leaves": null,
+    "min_child_weight": 2,
+    "missing": NaN,
+    "monotone_constraints": null,
+    "multi_strategy": null,
+    "n_estimators": 300,
+    "n_jobs": -1,
+    "num_parallel_tree": null,
+    "random_state": 42,
+    "reg_alpha": null,
+    "reg_lambda": 1.0,
+    "sampling_method": null,
+    "scale_pos_weight": null,
+    "subsample": 0.85,
+    "tree_method": "hist",
+    "validate_parameters": null,
+    "verbosity": 0,
+    "num_class": 3
+  },
+  "accuracy": 0.6176150661579674,
+  "classification_report": {
+    "Fatal": {
+      "precision": 0.04806160382368561,
+      "recall": 0.45764854614412137,
+      "f1-score": 0.08698786495254116,
+      "support": 791.0
+    },
+    "Serious": {
+      "precision": 0.20053760080015004,
+      "recall": 0.39371624938635247,
+      "f1-score": 0.2657278939739076,
+      "support": 8148.0
+    },
+    "Slight": {
+      "precision": 0.9055850365155257,
+      "recall": 0.6546642357945913,
+      "f1-score": 0.7599479729282864,
+      "support": 52656.0
+    },
+    "accuracy": 0.6176150661579674,
+    "macro avg": {
+      "precision": 0.38472808037978706,
+      "recall": 0.502009677108355,
+      "f1-score": 0.37088791061824505,
+      "support": 61595.0
+    },
+    "weighted avg": {
+      "precision": 0.8013066447391133,
+      "recall": 0.6176150661579674,
+      "f1-score": 0.6859287075864714,
+      "support": 61595.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      362,
+      224,
+      205
+    ],
+    [
+      1551,
+      3208,
+      3389
+    ],
+    [
+      5619,
+      12565,
+      34472
+    ]
+  ],
+  "feature_columns": [
+    "latitude",
+    "longitude",
+    "number_of_casualties",
+    "number_of_vehicles",
+    "speed_limit",
+    "year",
+    "month",
+    "day",
+    "hour",
+    "casualties_per_vehicle",
+    "day_of_week",
+    "junction_control",
+    "junction_detail",
+    "light_conditions",
+    "local_authority_district",
+    "carriageway_hazards",
+    "police_force",
+    "road_surface_conditions",
+    "road_type",
+    "urban_or_rural_area",
+    "weather_conditions",
+    "vehicle_type"
+  ],
+  "target_mapping": {
+    "Fatal": 0,
+    "Serious": 1,
+    "Slight": 2
+  },
+  "train_rows": 246377,
+  "test_rows": 61595
+}

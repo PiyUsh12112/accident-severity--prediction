@@ -1,46 +1,35 @@
+from __future__ import annotations
+
 import pandas as pd
-from pathlib import Path
 
-# Define file paths
-INPUT_PATH = Path("data/processed/cleaned_accident_data.csv")
-OUTPUT_PATH = Path("data/processed/processed_accident_data.csv")
+from src.paths import CLEAN_DATA_PATH, FEATURE_DATA_PATH, ensure_directories
+from src.preprocessing import create_model_features
 
 
-def load_data():
-    print("Loading cleaned data...")
-    df = pd.read_csv(INPUT_PATH)
+def load_clean_data(path=CLEAN_DATA_PATH) -> pd.DataFrame:
+    df = pd.read_csv(path)
+    df["accident_date"] = pd.to_datetime(df["accident_date"], errors="coerce")
+    df["time"] = pd.to_datetime(
+        df["time"].astype("string").str.strip().str[-8:],
+        format="%H:%M:%S",
+        errors="coerce",
+    )
     return df
 
 
-def create_features(df):
-    print("Creating features...")
-
-    # Example: if you have a date column
-    if "date" in df.columns:
-        df["date"] = pd.to_datetime(df["date"], errors="coerce")
-        df["year"] = df["date"].dt.year
-        df["month"] = df["date"].dt.month
-        df["hour"] = df["date"].dt.hour
-
-    # Example engineered feature
-    if "number_of_casualties" in df.columns and "number_of_vehicles" in df.columns:
-        df["casualties_per_vehicle"] = (
-            df["number_of_casualties"] / df["number_of_vehicles"]
-        )
-
-    return df
+def save_feature_data(df: pd.DataFrame, path=FEATURE_DATA_PATH) -> None:
+    serializable = df.copy()
+    serializable["accident_date"] = serializable["accident_date"].dt.strftime("%Y-%m-%d")
+    serializable["time"] = serializable["time"].dt.strftime("%H:%M:%S")
+    serializable.to_csv(path, index=False)
 
 
-def save_data(df):
-    print("Saving processed data...")
-    df.to_csv(OUTPUT_PATH, index=False)
-
-
-def main():
-    df = load_data()
-    df = create_features(df)
-    save_data(df)
-    print("Feature engineering completed successfully.")
+def main() -> None:
+    ensure_directories()
+    clean_df = load_clean_data()
+    feature_df = create_model_features(clean_df)
+    save_feature_data(feature_df)
+    print(f"Saved feature dataset to {FEATURE_DATA_PATH}")
 
 
 if __name__ == "__main__":

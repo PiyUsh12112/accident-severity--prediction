@@ -48,14 +48,14 @@ The higher the combined score, the more important the zone is for safety review 
 
 ## Machine Learning
 
-The current source code uses a `BalancedRandomForestClassifier` to handle class imbalance across accident severities.
+The current source code uses an `XGBoost` multiclass classifier with balanced sample weighting to handle class imbalance across accident severities.
 
 Current saved training metrics:
 
-- Accuracy: 59.64%
-- Fatal recall: 43.49%
-- Serious recall: 41.24%
-- Slight recall: 62.73%
+- Accuracy: 61.76%
+- Fatal recall: 45.76%
+- Serious recall: 39.37%
+- Slight recall: 65.47%
 - Training rows: 246,377
 - Test rows: 61,595
 

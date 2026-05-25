@@ -1,0 +1,26 @@
+column_name,dtype,description
+accident_index,string,Unique accident identifier
+accident_date,datetime,Date of the accident
+day_of_week,string,Weekday label
+junction_control,string,Junction control type
+junction_detail,string,Junction layout/detail
+accident_severity,category,"Severity class: Fatal, Serious, Slight"
+severity_label,int,"Encoded severity label: Fatal=0, Serious=1, Slight=2"
+latitude,float,Accident latitude
+longitude,float,Accident longitude
+time,datetime,Accident time parsed from HH:MM:SS
+year,int,Year extracted from accident_date
+month,int,Month extracted from accident_date
+day,int,Day extracted from accident_date
+hour,int,Hour extracted from time
+number_of_casualties,float,Number of casualties in the accident
+number_of_vehicles,float,Number of vehicles involved
+casualties_per_vehicle,float,number_of_casualties / number_of_vehicles
+speed_limit,float,Road speed limit
+road_type,string,Road type
+road_surface_conditions,string,Road surface state
+weather_conditions,string,Weather at the time of accident
+light_conditions,string,Lighting conditions
+urban_or_rural_area,string,Urban or rural classification
+vehicle_type,string,Primary vehicle type
+local_authority_district,string,District/local authority
